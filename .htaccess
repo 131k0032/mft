@@ -1,0 +1,40 @@
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^mft.com.mx [NC]
+RewriteRule ^(.*)$ http://www.mft.com.mx/$1 [R=301,L]
+
+Rewriterule ^tours-riviera-maya/(.+)/ detalle.php?title=$1
+
+# ErrorDocument 404 http://www.mft.com.mx/404error.php
+
+#RewriteBase /
+#RewriteRule ^index\.php$ - [L]
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteRule . /index.php [L]
+
+Rewriterule ^service-transfers-riviera-maya             services.php
+Rewriterule ^transfers1-mayan-fantasy-tours             search-results.php
+Rewriterule ^transfers-paso2-mayan-fantasy-tours        booking-step2.php
+Rewriterule ^transfers-paso3-mayan-fantasy-tours        booking-step3.php
+Rewriterule ^transfers-paso-final-mayan-fantasy-tours   booking-step-final.php
+Rewriterule ^tours-playa-del-carme-mft                  list-tours.php
+Rewriterule ^book-tour-mayan-fantasy                    book-tour-1.php
+Rewriterule ^tulum-tour-mft                             det-tulum.php
+Rewriterule ^coba-tulum-tour-mft                        det-coba.php
+Rewriterule ^chichen-itza-tour-mft                      det-chichen.php
+Rewriterule ^contact-mayan-fantasy-tours                contact.php
+Rewriterule ^about-transfers-riviera-maya               about.php
+Rewriterule ^tour-paso1-booking                         tour-paso1-book.php
+Rewriterule ^tour-paso2-booking                         tour-paso2-book.php
+Rewriterule ^tour-paso-final-booking                    tour-paso-final-book.php
+Rewriterule ^wedding-planner-transfers                  wedding.php
+Rewriterule ^bolsa-de-trabajo-transfers                 bolsa.php
+
+
+
+
+
+
+
+
+

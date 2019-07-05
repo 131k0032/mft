@@ -1,0 +1,108 @@
+(function () {
+
+  if (window.isIE9OrLess)
+    return;
+
+  var hostname, configName, configFolder, configJson, configCss, configJs, $head, $base;
+  hostname = window.location.hostname;
+
+  // match host
+  switch (hostname) {
+
+    case "travel.thebpmfestival.com":
+      configName = "bpm";
+      break;
+
+    case "travel.discodonniepresents.com":
+      configName = "discodonniepresents";
+      break;
+
+    case "travel.digitaldreamsfestival.ca":
+      configName = "digitaldreams";
+      break;
+
+    case "travel.electricadventure.com":
+      configName = "electricadventure";
+      break;
+
+    case "travel.sanfermin.com":
+      configName = "sanfermin";
+      break;
+
+    case "testveld.findor.com":
+      configName = "veld";
+      break;
+    case "motogp-valencia.findor.com":
+     configName="motogp-valencia";
+    break;
+    case "travel.veldmusicfestival.com":
+      configName = "veld";
+      break;
+
+    case "travel.coincidance.org":
+      configName = "coincidance";
+      break;
+
+    default:
+
+      // CloudFront and Latest domains where we trust the path more than the subdomain.
+      if( ( window.location.hostname.indexOf( '.cloudfront.net' ) >= 0 ) || ( window.location.hostname.indexOf( 'latest.findor.com' ) >= 0 ) || ( window.location.hostname.indexOf( 'develop.findor.com' ) >= 0 ) ) {
+
+        // "/veld/results/list" > ["", "veld", "results", "list"]
+        var _splitPath = window.location.pathname.split("/");
+
+        if( _splitPath[1] ) {
+
+          configName  = _splitPath[1];
+
+          $('base').attr( "href", ( "/" + configName + "/" ) );
+
+        }
+
+      } else {
+        configName = hostname === 'localhost' ? new RegExp(/client=([A-Za-z-]*)/).exec(window.location.search)[1] : hostname.match(/^[A-Za-z-]*/)[0];
+      }
+
+  }
+
+  // get site name from HTML config provided by server
+  if( $('meta[name=findorClient]').attr('content') ) {
+    configName = $('meta[name=findorClient]').attr('content');
+  }
+
+  configFolder = '/config/' + configName;
+  configJson = configFolder + '/config.json';
+  configCss = configFolder + '/config.css';
+
+  $head = $('head');
+  $base = $('base');
+
+  if ( ! configName) {
+    window.alert('invalid config!');
+    return;
+  }
+
+  // Global variables required by some legacy festivals. @depreciate
+  window.isIE9OrLess = window.isIE9OrLess || null;
+
+  // Add client Styles.
+  var configStyleElement = document.createElement('link');
+  configStyleElement.type = 'text/css';
+  configStyleElement.rel = 'stylesheet';
+  configStyleElement.href = configCss;
+  document.body.appendChild(configStyleElement);
+
+  // Add Client JS
+  $.getScript(configFolder + '/config.js', function(){
+    
+  });
+
+  // load config json & bootstrap app
+  angular.element(document).ready(function () {
+    $.getJSON(configJson, function (data) {
+      // console.debug('bootstrap', 'got config', data );
+      angular.module('app.config', []).constant('CONFIG', data);
+      angular.bootstrap(document, ['findor-client']);
+    });
+  });
+})();
